@@ -1,0 +1,6 @@
+{
+  "name": "Coca-Cola International Careers",
+  "description": "Official Coca-Cola International Careers portal with international candidate registration and application status tracking across 160+ countries.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
