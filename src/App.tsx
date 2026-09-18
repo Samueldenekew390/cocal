@@ -14,6 +14,7 @@ import { AdminLoginGate } from "./components/AdminLoginGate";
 import { Footer } from "./components/Footer";
 import { OtpLookupModal } from "./components/OtpLookupModal";
 import {
+  deleteApplicantFromSupabase,
   loadApplicantsFromSupabase,
   saveApplicantToSupabase,
 } from "./lib/supabase";
@@ -139,12 +140,21 @@ export default function App() {
   };
 
   // Admin deletes applicant
-  const handleDeleteApplicant = (id: string) => {
-    const target = applicants.find((a) => a.id === id);
+const handleDeleteApplicant = async (id: string) => {
+  const target = applicants.find((a) => a.id === id);
+
+  try {
+    await deleteApplicantFromSupabase(id);
     setApplicants((prev) => prev.filter((a) => a.id !== id));
     showToast(`Deleted candidate record "${target?.fullName || id}"`, "info");
-  };
-
+  } catch (error) {
+    console.error("Error deleting applicant from Supabase:", error);
+    showToast(
+      "The candidate was not deleted. Apply the applicants delete policy in Supabase, then try again.",
+      "info",
+    );
+  }
+};
   // Admin edits applicant details
   const handleEditApplicant = (updated: Applicant) => {
     setApplicants((prev) =>
