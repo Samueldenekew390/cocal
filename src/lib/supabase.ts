@@ -152,3 +152,24 @@ export async function saveApplicantToSupabase(
 
   return mapApplicantRow(data);
 }
+export async function deleteApplicantFromSupabase(id: string): Promise<void> {
+  if (!supabase) {
+    throw new Error(
+      "Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.",
+    );
+  }
+
+  const { data, error } = await supabase
+    .from("applicants")
+    .delete()
+    .eq("id", id)
+    .select("id");
+
+  if (error) throw error;
+
+  if (!data || data.length === 0) {
+    throw new Error(
+      "No applicant was deleted. Check the Supabase delete policy for public.applicants.",
+    );
+  }
+}
