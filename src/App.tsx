@@ -167,7 +167,14 @@ const handleDeleteApplicant = async (id: string) => {
   const handleInsertApplicant = async (
     newApplicant: Omit<Applicant, "id" | "submittedAt">,
   ): Promise<Applicant> => {
-    const newId = `coke-app-${String(applicants.length + 1).padStart(3, "0")}`;
+   const usedIds = new Set(applicants.map((applicant) => applicant.id));
+   let nextNumber = applicants.length + 1;
+   let newId = `coke-app-${String(nextNumber).padStart(3, "0")}`;
+
+while (usedIds.has(newId)) {
+  nextNumber += 1;
+  newId = `coke-app-${String(nextNumber).padStart(3, "0")}`;
+}
     const completeApplicant: Applicant = {
       ...newApplicant,
       id: newId,
